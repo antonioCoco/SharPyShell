@@ -1,0 +1,1 @@
+Write-Output "SharPyShell powershell module executed correctly"
