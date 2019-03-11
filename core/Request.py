@@ -17,6 +17,7 @@ class Request(Singleton):
         self.__headers[custom_header_key] = custom_header_value
 
     def __init__(self, url, user_agent, cookies_string=False, custom_header=False, insecure_ssl='false', proxy=False):
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         self.__url = url
         self.__headers = dict()
         self.__headers['User-Agent'] = self.__default_user_agent if user_agent == 'default' else user_agent
@@ -26,15 +27,12 @@ class Request(Singleton):
             self.__parse_custom_header(custom_header)
         self.__verify = 'CERT_REQUIRED' if insecure_ssl == 'false' else 'CERT_NONE'
         if proxy:
-            self.__proxy = proxy
-        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-        if proxy:
             proxy_type = proxy.split('://')[0]
             if proxy_type == 'http' or proxy_type == 'https':
-                self.__request_obj = urllib3.ProxyManager(self.__proxy, ssl_version=ssl.PROTOCOL_TLSv1,
+                self.__request_obj = urllib3.ProxyManager(proxy, ssl_version=ssl.PROTOCOL_TLSv1,
                                                           timeout=self.__request_timeout, cert_reqs=self.__verify)
             else:
-                self.__request_obj = SOCKSProxyManager(self.__proxy, ssl_version=ssl.PROTOCOL_TLSv1,
+                self.__request_obj = SOCKSProxyManager(proxy, ssl_version=ssl.PROTOCOL_TLSv1,
                                                        timeout=self.__request_timeout, cert_reqs=self.__verify)
         else:
             self.__request_obj = urllib3.PoolManager(ssl_version=ssl.PROTOCOL_TLSv1, timeout=self.__request_timeout,
