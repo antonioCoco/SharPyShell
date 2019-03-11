@@ -71,7 +71,7 @@ def create_generate_parser(subparsers):
 def create_interact_parser(subparsers):
     interact_parser = subparsers.add_parser(
         'interact',  formatter_class=argparse.RawTextHelpFormatter,
-        usage='SharPyShell.py interact -u URL -p password -e encryption [--default-shell] [--user-agent] [--cookies] [--custom-header] [--proxy]',
+        usage='SharPyShell.py interact -u URL -p password -e encryption [--default-shell] [--user-agent] [--cookies] [--custom-header] [--insecure] [--proxy]',
         help='Run terminal and interact with the remote agent'
     )
     interact_parser._action_groups.pop()

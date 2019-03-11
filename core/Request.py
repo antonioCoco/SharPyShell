@@ -1,5 +1,7 @@
 from utils.Singleton import Singleton
-import requests
+import ssl
+import urllib3
+from urllib3.contrib.socks import SOCKSProxyManager
 
 
 class Request(Singleton):
@@ -22,25 +24,32 @@ class Request(Singleton):
             self.__headers['Cookie'] = cookies_string
         if custom_header:
             self.__parse_custom_header(custom_header)
-        self.__verify = True if insecure_ssl == 'false' else False
+        self.__verify = 'CERT_REQUIRED' if insecure_ssl == 'false' else 'CERT_NONE'
         if proxy:
-            self.__proxies = dict()
-            self.__proxies['http'] = proxy
-            self.__proxies['https'] = proxy
+            self.__proxy = proxy
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        if proxy:
+            proxy_type = proxy.split('://')[0]
+            if proxy_type == 'http' or proxy_type == 'https':
+                self.__request_obj = urllib3.ProxyManager(self.__proxy, ssl_version=ssl.PROTOCOL_TLSv1,
+                                                          timeout=self.__request_timeout, cert_reqs=self.__verify)
+            else:
+                self.__request_obj = SOCKSProxyManager(self.__proxy, ssl_version=ssl.PROTOCOL_TLSv1,
+                                                       timeout=self.__request_timeout, cert_reqs=self.__verify)
         else:
-            self.__proxies = False
+            self.__request_obj = urllib3.PoolManager(ssl_version=ssl.PROTOCOL_TLSv1, timeout=self.__request_timeout,
+                                                     cert_reqs=self.__verify)
         # print (vars(self))
 
     def send_request(self, request):
         try:
-            response_object = requests.post(self.__url,
-                                            data={'data': request},
-                                            timeout=self.__request_timeout,
-                                            allow_redirects=self.__allow_redirects,
-                                            headers=self.__headers,
-                                            verify=self.__verify,
-                                            proxies=self.__proxies
-                                            )
+            response_object = self.__request_obj.request('POST',
+                                                         self.__url,
+                                                         fields={'data': request},
+                                                         redirect=self.__allow_redirects,
+                                                         headers=self.__headers,
+                                                         retries=False
+                                                         )
         except KeyboardInterrupt:
             raise Exception('Keyboard interrupt issued')
-        return response_object.status_code, response_object.headers, response_object.text
+        return response_object.status, response_object.headers, response_object.data

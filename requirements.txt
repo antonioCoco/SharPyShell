@@ -1,4 +1,5 @@
+urllib3
+urllib3[socks]
 prettytable
 Crypto
-requests
-requests[socks]
+pyopenssl
