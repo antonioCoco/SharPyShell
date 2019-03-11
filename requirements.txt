@@ -2,5 +2,3 @@ prettytable
 Crypto
 requests
 requests[socks]
-shlex
-
