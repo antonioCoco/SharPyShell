@@ -56,7 +56,7 @@ class Net_portscan(Module):
         args_parser = {k: v for k, v in enumerate(args)}
         hosts = args_parser.get(0)
         ports = args_parser.get(1, self.__default_ports)
-        custom_arguments = args_parser.get(3, self.__default_custom_arguments)
+        custom_arguments = args_parser.get(2, self.__default_custom_arguments)
         return hosts, ports, custom_arguments
 
     def __gen_appended_code(self, hosts, ports, custom_arguments, output_file):
@@ -69,7 +69,6 @@ class Net_portscan(Module):
             hosts, ports, custom_arguments = self.__parse_run_args(args)
             output_file = self._module_settings['env_directory'] + '\\' + random_generator()
             appended_code = self.__gen_appended_code(hosts, ports, custom_arguments, output_file)
-            print appended_code
             self._parse_response(self.invoke_ps_module_object.run(['Invoke-Portscan.ps1', appended_code]))
             response = self.exec_cmd_module_object.run(['type ' + output_file + ' & del /f /q ' + output_file])
             parsed_response = self._parse_response(response)
