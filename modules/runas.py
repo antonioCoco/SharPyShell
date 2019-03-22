@@ -16,7 +16,11 @@ class Runas(Module):
         The calling process will wait until the end of the execution of the spawned process.
         The two processes will communicate through 2 pipeline files (1 for stdout and 1 for stderr).
         The default logon type is 3 (Network_Logon).
-        If you set Interactive (2) logon type you will face some restriction problems.
+        If you set Interactive (2) logon type you will face some UAC restriction problems.
+        You can make interactive login without restrictions by setting the following regkey to 0 and restart the server:
+        
+            HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA
+        
         If you need to spawn a background or async process, i.e. spawning a reverse shell, set the argument
         'process_timeout_ms' to 0.
         
@@ -129,8 +133,8 @@ class Runas(Module):
                     const uint WAIT_ABANDONED = 0x00000080;
                     const uint WAIT_OBJECT_0 = 0x00000000;
                     const uint WAIT_TIMEOUT = 0x00000102;
-                
-                    [PermissionSetAttribute(SecurityAction.Demand, Name = "FullTrust")]                    
+                    
+                    [PermissionSetAttribute(SecurityAction.Demand, Name = "FullTrust")]
                     public string RunAs(string userName, string password, string domainName, string cmd, string stdout_file, string stderr_file, string working_directory, int logon_type, uint process_ms_timeout)
                     {
                         SafeTokenHandle safeTokenHandle;
