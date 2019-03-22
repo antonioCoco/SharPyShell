@@ -1,5 +1,4 @@
-from core.Module import ModuleException
-from modules.inject_shellcode import Inject_shellcode
+from modules.inject_shellcode import Inject_shellcode, ModuleException
 from core import config
 import pefile
 
