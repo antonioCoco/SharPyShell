@@ -22,7 +22,7 @@ class Inject_dll_reflective(Inject_shellcode):
         The dll must be compiled with the reflective loader exported function otherwise it cannot be executed
         at runtime.
         You can use one of the following supported injection technique:
-            - remove_virtual:           classic injection:
+            - remote_virtual:           classic injection:
                                         VirtualAllocEx (RWX) -> WriteProcessMemory -> CreateRemoteThread
             - remote_virtual_protect:   with this technique you never allocate RWX memory (polymorphic encoders won't work):
                                         VirtualAllocEx(RW) -> WriteProcessMemory -> VirtualProtect(RX) -> CreateRemoteThread

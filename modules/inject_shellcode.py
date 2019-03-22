@@ -13,7 +13,7 @@ class Inject_shellcode(Module):
         You can decide if inject into an existing process or if spawn a new process as a host process for the code.
         You should create the payload for the shellcode from msfvenom with the flag --format csharp.
         You can use one of the following supported injection technique:
-            - remove_virtual:           classic injection:
+            - remote_virtual:           classic injection:
                                         VirtualAllocEx (RWX) -> WriteProcessMemory -> CreateRemoteThread
             - remote_virtual_protect:   with this technique you never allocate RWX memory (polymorphic encoders won't work):
                                         VirtualAllocEx(RW) -> WriteProcessMemory -> VirtualProtect(RX) -> CreateRemoteThread
