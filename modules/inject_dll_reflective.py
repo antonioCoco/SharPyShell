@@ -15,12 +15,23 @@ class Inject_dll_reflective(Inject_shellcode):
         Author:     @stephenfewer
         Links:      https://github.com/stephenfewer/ReflectiveDLLInjection
               
-        
-        Inject a reflective DLL into a remote process
+              
+        Inject a reflective DLL into a remote process.
+        You can choose if create a new process or use a pid of an existing process as a host process.
+        The dll_path is a relative path to a dll that exists in the folder 'reflective_dll/'.
+        The dll must be compiled with the reflective loader exported function otherwise it cannot be executed
+        at runtime.
+        You can use one of the following supported injection technique:
+            - remove_virtual:           classic injection:
+                                        VirtualAllocEx (RWX) -> WriteProcessMemory -> CreateRemoteThread
+            - remote_virtual_protect:   with this technique you never allocate RWX memory (polymorphic encoders won't work):
+                                        VirtualAllocEx(RW) -> WriteProcessMemory -> VirtualProtect(RX) -> CreateRemoteThread
+        Note that when you try to inject into an existing process you should ensure you have the rights to open
+        a handle to that process otherwise the injection cannot be performed.
         
         
         Usage:
-            #inject_shellcode dll_path [injection_type] [remote_process]
+            #inject_dll_reflective dll_path [injection_type] [remote_process]
         
         Positional arguments:
             dll_path                    name of a .dll module in the 'reflective_dll/' directory
@@ -33,6 +44,8 @@ class Inject_dll_reflective(Inject_shellcode):
                                         Default: 'cmd.exe'
 
         Examples:
+            Inject a messagebox reflective DLL into an existing process:
+                #inject_dll_reflective messagebox_reflective_x64.dll 'remote_virtual' '2264'
            
                                                 
     """

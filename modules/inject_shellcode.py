@@ -13,10 +13,12 @@ class Inject_shellcode(Module):
         You can decide if inject into an existing process or if spawn a new process as a host process for the code.
         You should create the payload for the shellcode from msfvenom with the flag --format csharp.
         You can use one of the following supported injection technique:
-            - remove_virtual: classic injection:
-                                VirtualAllocEx (RWX) -> WriteProcessMemory -> CreateRemoteThread
-            - remote_protect: with this technique you never allocate RWX memory:
-                                VirtualAllocEx(RW) -> WriteProcessMemory -> VirtualProtect(RX) -> CreateRemoteThread
+            - remove_virtual:           classic injection:
+                                        VirtualAllocEx (RWX) -> WriteProcessMemory -> CreateRemoteThread
+            - remote_virtual_protect:   with this technique you never allocate RWX memory (polymorphic encoders won't work):
+                                        VirtualAllocEx(RW) -> WriteProcessMemory -> VirtualProtect(RX) -> CreateRemoteThread
+        Note that when you try to inject into an existing process you should ensure you have the rights to open
+        a handle to that process otherwise the injection cannot be performed.
         
         Usage:
             #inject_shellcode shellcode_path [injection_type] [remote_process]
@@ -32,7 +34,12 @@ class Inject_shellcode(Module):
                                         Default: 'cmd.exe'
 
         Examples:
-           
+            Inject generated shellcode:
+                #inject_shellcode /path/to/shellcode.cs
+            Inject shellcode with specific injection type:
+                #inject_shellcode /path/to/shellcode.cs 'remote_virtual_protect'
+            Inject shellcode into an existing process
+                #inject_shellcode /path/to/shellcode.cs 'remote_virtual' '1550'
                                                 
     """
 
@@ -155,7 +162,7 @@ class Inject_shellcode(Module):
                                     }
                                 }
                                 else{
-                                    output += "\n\n\tCode executed left in background as an async thread in the process " + processName + " with pid " + targetProcessPid; 
+                                    output += "\n\n\tCode executed left in background as an async thread in the process '" + processName + ".exe' with pid " + targetProcessPid; 
                                 }
                             }
                             catch (Exception ex)
@@ -307,7 +314,7 @@ class Inject_shellcode(Module):
                                 }
                             }
                             else{
-                                output += "\n\n\tCode executed left in background as an async thread in the process " + processName + " with pid " + targetProcessPid; 
+                                output += "\n\n\tCode executed left in background as an async thread in the process '" + processName + ".exe' with pid " + targetProcessPid; 
                             }
                         }
                         catch (Exception ex)
