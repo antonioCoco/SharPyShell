@@ -1,7 +1,7 @@
 import sys
 import os
 
-sharpyshell_version='1.1.3'
+sharpyshell_version='1.1.4'
 
 header = '#SharPyShell v' + sharpyshell_version + ' - @splinter_code'
 banner = """

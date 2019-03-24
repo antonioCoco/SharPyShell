@@ -39,8 +39,8 @@ class Privesc_powerup(Module):
                 #privesc_powerup 'user1' 'password1'
             Run powerup as a specific domain user
                 #privesc_powerup 'user1' 'password1' 'domain'
-            Run powerup with a custom command, i.e. save report as html
-                #privesc_powerup '' '' '' ';Invoke-AllChecks -HTMLReport'
+            Run powerup with a custom command, i.e. abusing a service misconfiguration
+                #privesc_powerup '' '' '' ';Invoke-ServiceAbuse -Name "VulnSvc"'
 
     """
 
