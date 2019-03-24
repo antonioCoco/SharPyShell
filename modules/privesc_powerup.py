@@ -12,6 +12,10 @@ class Privesc_powerup(Module):
     _exception_class = PrivescPowerupModuleException
     short_help = "Run Powerup module to assess all misconfiguration for privesc"
     complete_help = r"""
+        Author:     @PowerShellMafia
+        Link:       https://github.com/PowerShellMafia/PowerSploit/blob/dev/Privesc/PowerUp.ps1
+        
+        
         This module run the Powerup.ps1 script in order to find all possible misconfiguration that can
         lead to a privilege escalation.
         The output of this module will be just informative, no automatic privesc exploitation will be performed.
@@ -19,9 +23,7 @@ class Privesc_powerup(Module):
         a user to runas this module.
         If no users are provided this module will run under the application pool running user.
         
-        Source Code: 
-            https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1
-                        
+        
         Usage:
             #privesc_powerup [username] [password] [domain] [custom_command]
         
