@@ -17,6 +17,12 @@ class Mimikatz(Module):
     _exception_class = MimikatzModuleException
     short_help = "Run an offline version of mimikatz directly in memory"
     complete_help = r"""
+        Authors:    @gentilkiwi @PowerShellMafia
+        Links:      https://github.com/gentilkiwi/mimikatz
+                    https://github.com/PowerShellMafia/PowerSploit/blob/4c7a2016fc7931cd37273c5d8e17b16d959867b3/Exfiltration/Invoke-Mimikatz.ps1
+        Credits:    @phra
+        
+        
         This module allows you to run mimikatz in a versatile way.
         Within this module it is possible to run mimikatz in 2 different way:
             'ps1': an obfuscated ps1 module will be uploaded to the server and get deobfuscated at runtime in memory;
@@ -25,9 +31,6 @@ class Mimikatz(Module):
         The exe version will be just dropped as clear and could be catched by av scanners.
         Exec_Type can be 'ps1' or 'exe'. 
         
-        Source Code: 
-            https://github.com/gentilkiwi/mimikatz
-            https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1
             
         Usage:
             #mimikatz [exec_type] [username] [password] [domain] [custom_command]
