@@ -32,7 +32,7 @@ class Privesc_powerup(Module):
             password                password of the user to runas the process
             domain                  domain of the user to runas the process
             custom_command          the command to run within the module
-                                    Default: ';Invoke-AllChecks'
+                                    Default: ';Invoke-PrivescAudit -Format List'
                                         
         Examples:
             Run powerup as the current user
@@ -49,7 +49,7 @@ class Privesc_powerup(Module):
     __default_username = ''
     __default_password = ''
     __default_domain = ''
-    __default_custom_command = ';Invoke-AllChecks'
+    __default_custom_command = ';Invoke-PrivescAudit -Format List'
 
     def __init__(self, password, channel_enc_mode, module_settings, request_object):
         Module.__init__(self, password, channel_enc_mode, module_settings, request_object)
