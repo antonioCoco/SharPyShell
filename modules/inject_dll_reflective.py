@@ -21,7 +21,7 @@ class Inject_dll_reflective(Inject_shellcode):
         The dll_path is a relative path to a dll that exists in the folder 'reflective_dll/'.
         The dll must be compiled with the 'ReflectiveLoader' exported function otherwise it cannot be executed
         at runtime.
-        You can use one of the following supported injection technique:
+        You can use one of the following supported injection techniques:
             - remote_virtual:           classic injection:
                                         VirtualAllocEx (RWX) -> WriteProcessMemory -> CreateRemoteThread
             - remote_virtual_protect:   with this technique you never allocate RWX memory (polymorphic encoders won't work):
@@ -45,7 +45,7 @@ class Inject_dll_reflective(Inject_shellcode):
 
         Examples:
             Inject a messagebox reflective DLL into an existing process:
-                #inject_dll_reflective messagebox_reflective_x64.dll 'remote_virtual' '2264'
+                #inject_dll_reflective messagebox_reflective.dll remote_virtual 2264
                                              
     """
 

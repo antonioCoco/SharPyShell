@@ -13,7 +13,7 @@ class Inject_shellcode(Module):
         This module allow to inject your shellcode in a host process.
         You can choose to create a new process or use a pid of an existing process as a host process.
         If you create the payload for the shellcode from msfvenom ensure you use the flag --format raw.
-        You can use one of the following supported injection technique:
+        You can use one of the following supported injection techniques:
             
             - remote_virtual:           classic injection:
                                         VirtualAllocEx (RWX) -> WriteProcessMemory -> CreateRemoteThread

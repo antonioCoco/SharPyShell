@@ -229,10 +229,10 @@ class Inject_dll_srdi(Inject_shellcode):
               
               
         Inject a generic DLL into a remote process.
-        This module convert a generic DLL into a position independent Shellcode ready to be injected.
+        This module converts a generic DLL into a position independent Shellcode ready to be injected.
         You can choose to create a new process or use a pid of an existing process as a host process.
         The dll_path is a relative path to a dll that exists in the folder 'dll/'.
-        You can use one of the following supported injection technique:
+        You can use one of the following supported injection techniques:
             - remote_virtual:           classic injection:
                                         VirtualAllocEx (RWX) -> WriteProcessMemory -> CreateRemoteThread
             - remote_virtual_protect:   with this technique you never allocate RWX memory (polymorphic encoders won't work):
@@ -254,9 +254,9 @@ class Inject_dll_srdi(Inject_shellcode):
                                         if you pass a pid it will try to inject into an existing running process
                                         Default: 'cmd.exe'
 
-        Examples:                
-                    ?????????????????????????????????????????????????????????????????????????????????????????????????????
-                    ?????????????????????????????????????????????????????????????????????????????????????????????????????                         
+        Examples:
+            Convert a messagebox generic DLL in shellcode and inject into an existing process:
+                #inject_dll_srdi messagebox_msf.dll remote_virtual 2264
     """
 
     __default_exported_function_name = 0x10
@@ -283,7 +283,6 @@ class Inject_dll_srdi(Inject_shellcode):
         with open(dll_path, 'rb') as file_handle:
             dll_bin_byte_arr = bytearray(file_handle.read())
         srdi_object = sRDI()
-        # user_data = '"log C:\\windows\\temp\\powerkatz_srdi.log" privilege::debug sekurlsa::logonpasswords exit\x00'.encode('utf-16-le')
         if exported_function_name != 0x10:
             exported_function_name = srdi_object.HashFunctionName(exported_function_name)
         shellcode_bin_byte_arr = \

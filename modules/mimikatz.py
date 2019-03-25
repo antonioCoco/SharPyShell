@@ -25,20 +25,23 @@ class Mimikatz(Module):
         
         
         This module allows you to run mimikatz in a versatile way.
-        Within this module it is possible to run mimikatz in 2 different way:
+        Within this module it is possible to run mimikatz in 3 different ways:
             'ps1': an obfuscated ps1 module will be uploaded to the server and get deobfuscated at runtime in memory;
-            'exe': the classic mimikatz binary will be uploaded to the server and run with arguments.
+            'exe': the classic mimikatz binary will be uploaded to the server and run with arguments;
+            'dll': convert mimikatz dll into a position independent shellcode and inject into a remote process.
         It is recommended to run the ps1 version because it will be obfuscated and run from memory.
         The exe version will be just dropped as clear and could be catched by av scanners.
+        The dll version is the most stealthy but it doesn't support impersonation atm.
         
             
         Usage:
             #mimikatz [exec_type] [username] [password] [domain] [custom_command]
         
         Positional arguments:
-            exec_type               type of running mimikatz.
-                                    'ps1' will upload and execute the powershell version of mimikatz
-                                    'exe' will upload and execute the classic version of binary mimikatz
+            exec_type               execution type for running mimikatz:
+                                        'ps1' will upload and execute the powershell version of mimikatz
+                                        'exe' will upload and execute the classic version of binary mimikatz
+                                        'dll' will inject converted dll shellcode into a remote process
                                     Default: 'ps1'
             username                username of the user to runas the process
             password                password of the user to runas the process
@@ -46,9 +49,11 @@ class Mimikatz(Module):
             custom_command          based on exec_type, the custom command could be:
                                         - 'ps1' : powershell code to add to the ps1 mimikatz module;
                                         - 'exe' : command line arguments to the mimikatz binary;
+                                        - 'dll' : command line arguments to be executed.
                                     Default:
                                         'ps1': ';Invoke-Mimikatz -DumpCreds'
                                         'exe': 'privilege::debug sekurlsa::logonpasswords exit'  
+                                        'dll': 'privilege::debug sekurlsa::logonpasswords exit'  
         
         Examples:
             Run mimikatz as the current user
