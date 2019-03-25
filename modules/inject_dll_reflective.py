@@ -19,7 +19,7 @@ class Inject_dll_reflective(Inject_shellcode):
         Inject a reflective DLL into a remote process.
         You can choose to create a new process or use a pid of an existing process as a host process.
         The dll_path is a relative path to a dll that exists in the folder 'reflective_dll/'.
-        The dll must be compiled with the reflective loader exported function otherwise it cannot be executed
+        The dll must be compiled with the 'ReflectiveLoader' exported function otherwise it cannot be executed
         at runtime.
         You can use one of the following supported injection technique:
             - remote_virtual:           classic injection:

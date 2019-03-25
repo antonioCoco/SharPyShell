@@ -99,6 +99,7 @@ Generated with asciiflow.com
  #exec_cmd               Run a cmd.exe /c command on the server                                     
  #exec_ps                Run a powershell.exe -nop -noni -enc 'base64command' on the server         
  #inject_dll_reflective  Inject a reflective DLL in a new (or existing) process                     
+ #inject_dll_srdi        Inject a generic DLL in a new (or existing) process                        
  #inject_shellcode       Inject shellcode in a new (or existing) process                            
  #invoke_ps_module       Run a ps1 script on the target server                                      
  #invoke_ps_module_as    Run a ps1 script on the target server as a specific user                   
@@ -110,7 +111,7 @@ Generated with asciiflow.com
  #privesc_powerup        Run Powerup module to assess all misconfiguration for privesc              
  #runas                  Run a cmd.exe /c command spawning a new process as a specific user         
  #runas_ps               Run a powershell.exe -enc spawning a new process as a specific user        
- #upload                 Upload a file to the server
+ #upload                 Upload a file to the server 
 ```
 
 ## Windows version tested
