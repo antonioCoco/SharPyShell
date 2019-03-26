@@ -1,5 +1,6 @@
 urllib3
-urllib3[socks]
-prettytable
-Crypto
+PySocks
+pycrypto
 pyopenssl
+pefile
+prettytable

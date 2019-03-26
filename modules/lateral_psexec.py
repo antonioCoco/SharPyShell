@@ -34,7 +34,7 @@ class Lateral_psexec(Module):
         In those cases, you need to use different credentials of a more privileged user in order to launch this module.
                        
         Usage:
-            #lateral_psexec target_ip username password command [local_user] [local_password] [local_domain]
+            #lateral_psexec target_ip username password command [runas_system] [local_user] [local_password] [local_domain]
         
         Positional arguments:
             target_ip               the ip of the remote server

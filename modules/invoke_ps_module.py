@@ -105,6 +105,8 @@ class Invoke_ps_module(Module):
     def _gen_appended_code(self, appended_code):
         if appended_code == '':
             return ''
+        if '""' in appended_code:
+            appended_code = appended_code.replace('""', '"')
         enc_appended_code_path = config.modules_paths + 'ps_modules/' + random_generator()
         byte_arr_app_module_encrypted = bytearray(appended_code)
         self.__xor_bytearray(byte_arr_app_module_encrypted)
