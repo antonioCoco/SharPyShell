@@ -58,6 +58,8 @@ class Mimikatz(Module):
         Examples:
             Run mimikatz as the current user
                 #mimikatz
+            Run mimikatz dll
+                #mimikatz 'dll'
             Run mimikatz as a specific local user
                 #mimikatz 'ps1' 'user1' 'password1'
             Run mimikatz as a specific domain user
