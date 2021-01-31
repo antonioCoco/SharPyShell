@@ -1,5 +1,9 @@
 # SharPyShell
 
+<p align="center"><img src="logo.png" width="500" height="300" /></p>
+
+<hr/>
+
 SharPyShell is a tiny and obfuscated ASP.NET webshell that executes commands received by an encrypted channel compiling them in memory at runtime.
 
 SharPyShell supports only C# web applications that runs on .NET Framework >= 2.0<br>VB is not supported atm.
@@ -116,37 +120,13 @@ Generated with asciiflow.com
 
 ## Windows version tested
 
-Windows Server 2019 Standard<br>
-&emsp;  OS Name:                   Microsoft Windows Server 2019 Standard Evaluation<br>
-&emsp;  OS Version:                10.0.17763 N/A Build 17763<br>
-<br>
-Windows Server 2016 Standard<br>
-&emsp;  OS Name:                   Microsoft Windows Server 2016 Standard Evaluation<br>
-&emsp;  OS Version:                10.0.14393 N/A Build 14393<br>
-<br>
-Windows Server 2012 R2 Standard<br>
-&emsp;	OS Name:                   Microsoft Windows Server 2012 R2 Standard<br>
-&emsp;	OS Version:                6.3.9600 N/A Build 9600<br>
-<br>	
-Windows server 2012 Standard<br>
-&emsp;	OS Name:                   Microsoft Windows Server 2012 Standard Evaluation<br>
-&emsp;  OS Version:                6.2.9200 N/A Build 9200<br>
-<br>
-Windows Server 2008 R2 Standard<br>
-&emsp;  OS Name:                   Microsoft Windows Server 2008 R2 Standard<br>
-&emsp;  OS Version:                6.1.7601 Service Pack 1 Build 7601<br>
-<br>
-Windows Server 2008 Standard x64<br>
-&emsp;	OS Name:                   Microsoft© Windows Server© 2008 Standard <br>
-&emsp;	OS Version:                6.0.6001 Service Pack 1 Build 6001<br>
-<br>
-Windows Server 2003 Standard x64 (partial working)<br>
-&emsp;	OS Name:                   Microsoft(R) Windows(R) Server 2003 Standard x64 Edition<br>
-&emsp;	OS Version:                5.2.3790 Service Pack 2 Build 3790<br>
+Windows Server >= 2008 Standard x64
+
 
 ## Credits
 
 <ul>
+  <li><a href="https://github.com/newfinal100">@newfinal100</a> (for the fancy logo!)</li>
   <li><a href="https://github.com/epinna/weevely3">@weevely3</a></li>
   <li><a href="https://github.com/ohpe/juicy-potato">@juicy-potato</a></li>
   <li><a href="https://github.com/PowerShellMafia/PowerSploit">@PowerSploit</a></li>
