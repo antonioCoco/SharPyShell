@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from core.Generate import Generate
 from core.SharPyShellPrompt import SharPyShellPrompt
@@ -144,7 +144,7 @@ def create_interact_parser(subparsers):
 
 
 if __name__ == '__main__':
-    print config.banner
+    print (config.banner)
     parser = argparse.ArgumentParser(prog='SharPyShell', formatter_class=argparse.RawTextHelpFormatter,
                                      epilog=example_text_main)
     parser.add_argument('--version', action='version', version=config.header)
@@ -153,11 +153,11 @@ if __name__ == '__main__':
     create_interact_parser(subparsers)
     args = parser.parse_args()
 
-    if args.mode == 'generate':
+    if args == 'generate':
         generate_obj = Generate(args.password, args.encryption, args.obfuscator, args.endian_type, args.output)
         generate_obj.generate()
 
-    if args.mode == 'interact':
+    if args == 'interact':
         prompt = SharPyShellPrompt(args.password, args.encryption, args.default_shell, args.url,
                                    args.user_agent, args.cookies, args.custom_header, args.insecure, args.proxy)
         prompt.cmdloop('\n')

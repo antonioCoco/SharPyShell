@@ -7,7 +7,7 @@ class GetTempDirectory(Module):
 
     _exception_class = GetTempDirectoryException
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell
                 {                    
@@ -45,7 +45,7 @@ class GetEnvDirectory(Module):
 
     _exception_class = GetEnvDirectoryException
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 using System.Security.AccessControl;using System.Security.Principal;
                 
@@ -101,7 +101,7 @@ class ClearDirectories(Module):
 
     _exception_class = ClearDirectoriesException
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell
                 {                    
@@ -198,7 +198,7 @@ class Environment:
         excluded_path = ['env_directory', 'working_directory']
         modules_path = ['@"' + v + '"' for k, v in env_settings.items() if k not in excluded_path]
         modules_path_string_array = '{' + ','.join(modules_path) + '}'
-        print '\nRemoving tracks....\n'
+        print ('\nRemoving tracks....\n')
         result = self.clear_dir_obj.run([modules_path_string_array, env_directory])
         if '{{{ClearDirectoriesException}}}' not in result:
             result = format_output(result)

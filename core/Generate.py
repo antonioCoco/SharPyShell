@@ -11,9 +11,9 @@ class Generate():
     __obfuscator = ''
     __endian_type = ''
 
-    __templates_path = config.sharpyshell_path+'agent/'
-    __runtime_compiler_path = __templates_path + 'runtime_compiler/'
-    __output_path = config.output_path + 'sharpyshell.aspx'
+    __templates_path = f'{config.sharpyshell_path} agent/'
+    __runtime_compiler_path = f'{__templates_path} runtime_compiler/'
+    __output_path = f'{config.output_path} sharpyshell.aspx'
 
     def __init__(self, password, encryption, obfuscator, endian_type, output):
         if encryption == 'aes128':
@@ -27,7 +27,7 @@ class Generate():
             self.__output_path = output
 
     def __get_template_code(self):
-        template_path = self.__templates_path + 'template_' + self.__obfuscator
+        template_path = f'{self.__templates_path} template_  {self.__obfuscator}'
         if self.__obfuscator == 'raw':
             template_path += '_'
             if 'aes' in self.__encryption:
@@ -109,5 +109,5 @@ class Generate():
         webshell_output_path = self.__output_path
         with open(webshell_output_path, 'w') as file_handle:
             file_handle.write(webshell_code)
-        print 'SharPyShell webshell written correctly to: ' + webshell_output_path
-        print '\nUpload it to the target server and let\'s start having some fun :) \n\n'
+        print ('SharPyShell webshell written correctly to: ' + webshell_output_path)
+        print ('\nUpload it to the target server and let\'s start having some fun :) \n\n')
