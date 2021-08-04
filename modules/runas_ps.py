@@ -53,7 +53,7 @@ class Runas_ps(Runas):
     def __gen_powershell_launcher(self, ps_code):
         powershell_launcher='powershell -nop -noni -enc '
         ps_code = '$ProgressPreference = "SilentlyContinue";' + ps_code
-        powershell_launcher += b64encode(ps_code.encode('UTF-16LE'))
+        powershell_launcher += str(b64encode(ps_code.encode('UTF-16LE')),'UTF-8')
         return powershell_launcher
 
     def _create_request(self, args):

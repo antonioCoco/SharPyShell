@@ -1,4 +1,5 @@
 from utils.Singleton import Singleton
+from utils.Singleton import Singleton
 import ssl
 import urllib3
 from urllib3.contrib.socks import SOCKSProxyManager
