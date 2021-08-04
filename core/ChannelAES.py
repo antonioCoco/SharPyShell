@@ -8,7 +8,7 @@ class ChannelAES(Singleton):
     BS = 16
 
     def __init__(self, password):
-        self.hashed_password = password.decode('hex')
+        self.hashed_password = bytes.fromhex(password)
         self.IV = self.hashed_password[0:self.BS]
 
     def encrypt(self, plain_data):
@@ -22,4 +22,4 @@ class ChannelAES(Singleton):
         aes = AES.new(self.hashed_password, AES.MODE_CBC, self.IV)
         unpad = lambda s: s[:-ord(s[len(s) - 1:])]
         decrypted_data = aes.decrypt(encrypted_data)
-        return unpad(decrypted_data)
+        return unpad(decrypted_data).decode()

@@ -57,14 +57,14 @@ class Module(Singleton):
 
     def _encrypt_request(self, request_clear):
         request_encrypted = self._channel_enc_obj.encrypt(request_clear)
-        request_encrypted_encoded = base64.b64encode(bytes(request_encrypted, 'utf-8'))
+        request_encrypted_encoded = base64.b64encode(request_encrypted)
         return request_encrypted_encoded
 
     def _post_request(self, request_encrypted_encoded):
         response_status_code, response_headers, response_text = \
             self._request_object.send_request(request_encrypted_encoded)
         if response_status_code != 200:
-            raise self._exception_class('{{{' + self._exception_class.__name__ + '}}}\n' +
+            raise self._exception_class('{{{' + str(self._exception_class.__name__) + '}}}\n' +
                                         str(response_headers) + '\n\n' +
                                         str(response_text))
         return response_text
