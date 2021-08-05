@@ -50,10 +50,6 @@ class Generate():
                 xored.append(hex(x ^ ord(y)))
             return '{' + ",".join(xored) + '}'
 
-        def generate_byte_file_string(byte_arr):
-            output = [str(hex(byte)) for byte in byte_arr]
-            return '{' + ",".join(output) + '}'
-
         if 'aes' in self.__encryption:
             dll_name = 'runtime_compiler_aes.dll'
         else:
@@ -66,7 +62,7 @@ class Generate():
 
     def __generate_webshell_code_ulong_compression(self, template_code):
         def get_dll_code(dll_code_path):
-            with open(dll_code_path, 'r') as file_handle:
+            with open(dll_code_path, 'rb') as file_handle:
                 dll_code = file_handle.read()
             return dll_code
 
