@@ -111,12 +111,10 @@ class Download(Module):
         return output_file_size
 
     def __write_local_file(self, file_content, output_path, split=False):
-        print(type(file_content))
         if split:
             file_open_mode = 'ab'
         else:
             file_open_mode = 'wb'
-        print(file_open_mode)
         with open(output_path, file_open_mode) as outfile:
             outfile.write(bytes(file_content, "utf-8"))
         output = "File Downloaded correctly to " + output_path

@@ -50,10 +50,6 @@ class Generate():
                 xored.append(hex(x ^ ord(y)))
             return '{' + ",".join(xored) + '}'
 
-        def generate_byte_file_string(byte_arr):
-            output = [str(hex(byte)) for byte in byte_arr]
-            return '{' + ",".join(output) + '}'
-
         if 'aes' in self.__encryption:
             dll_name = 'runtime_compiler_aes.dll'
         else:

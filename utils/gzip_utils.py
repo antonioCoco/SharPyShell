@@ -11,5 +11,4 @@ def get_compressed_base64_from_file(path):
 
 
 def get_compressed_base64_from_binary(bin_bytearray_input):
-    print(base64.b64encode(gzip.compress(bin_bytearray_input)).decode())
     return base64.b64encode(gzip.compress(bin_bytearray_input)).decode()
