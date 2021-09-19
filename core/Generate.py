@@ -4,7 +4,7 @@ from itertools import cycle
 import hashlib
 import random
 import io
-import os.sep
+import os
 
 class Generate():
 

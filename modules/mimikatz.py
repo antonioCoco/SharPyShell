@@ -8,7 +8,7 @@ from modules.invoke_ps_module_as import Invoke_ps_module_as
 from modules.inject_dll_srdi import Inject_dll_srdi
 from utils.random_string import random_generator
 import traceback
-import os.sep
+import os
 
 
 class MimikatzModuleException(ModuleException):
