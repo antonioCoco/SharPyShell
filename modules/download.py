@@ -116,7 +116,7 @@ class Download(Module):
         else:
             file_open_mode = 'wb'
         with open(output_path, file_open_mode) as outfile:
-            outfile.write(bytes(file_content, "utf-8"))
+            outfile.write(file_content)
         output = "File Downloaded correctly to " + output_path
         return output
 
@@ -163,7 +163,7 @@ class Download(Module):
                 encrypted_request = self._encrypt_request(req)
                 encrypted_response = self._post_request(encrypted_request)
                 decrypted_response = self._decrypt_response(encrypted_response)
-                file_content = self._parse_response(decrypted_response)
+                file_content = decrypted_response
                 if len(requests) > 1:
                     parsed_response = self.__write_local_file(file_content, download_output_path, split=True)
                     print ('Chunk ' + str(i + 1) + ' --> ' + str(chunk_size * i) + ' - ' +\
