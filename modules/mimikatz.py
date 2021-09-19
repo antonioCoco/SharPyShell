@@ -8,6 +8,7 @@ from modules.invoke_ps_module_as import Invoke_ps_module_as
 from modules.inject_dll_srdi import Inject_dll_srdi
 from utils.random_string import random_generator
 import traceback
+import os.sep
 
 
 class MimikatzModuleException(ModuleException):
@@ -104,7 +105,7 @@ class Mimikatz(Module):
         if 'mimikatz.exe' in self._module_settings.keys():
             bin_path = self._module_settings['mimikatz.exe']
         else:
-            exe_path = config.modules_paths + 'exe_modules/mimikatz.exe'
+            exe_path = config.modules_paths + 'exe_modules' + os.sep + 'mimikatz.exe'
             remote_upload_path = self._module_settings['env_directory'] + '\\' + random_generator() + '.exe'
             print ('\n\n\nUploading mimikatz binary....\n')
             upload_response = self._parse_response(self.upload_module_object.run([exe_path, remote_upload_path]))

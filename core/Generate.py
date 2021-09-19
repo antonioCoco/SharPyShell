@@ -4,6 +4,7 @@ from itertools import cycle
 import hashlib
 import random
 import io
+import os.sep
 
 class Generate():
 
@@ -12,8 +13,8 @@ class Generate():
     __obfuscator = ''
     __endian_type = ''
 
-    __templates_path = config.sharpyshell_path+'agent/'
-    __runtime_compiler_path = __templates_path + 'runtime_compiler/'
+    __templates_path = config.sharpyshell_path+'agent'+os.sep
+    __runtime_compiler_path = __templates_path + 'runtime_compiler'+os.sep
     __output_path = config.output_path + 'sharpyshell.aspx'
 
     def __init__(self, password, encryption, obfuscator, endian_type, output):

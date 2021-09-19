@@ -19,7 +19,7 @@ banner = """
 
     """ % header
 
-sharpyshell_path=os.path.dirname(os.path.realpath(sys.argv[0])) + '/'
+sharpyshell_path=os.path.dirname(os.path.realpath(sys.argv[0])) + os.sep
 sys.path.insert(0, sharpyshell_path)
-modules_paths=sharpyshell_path + 'modules/'
-output_path=sharpyshell_path + 'output/'
+modules_paths=sharpyshell_path + 'modules' + os.sep
+output_path=sharpyshell_path + 'output' + os.sep

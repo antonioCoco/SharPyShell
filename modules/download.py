@@ -23,7 +23,7 @@ class Download(Module):
         Positional arguments:
             remote_input_path               The file path you want to download from the remote server
             local_output_path               The path where the file will be saved on your local machine
-                                            Default: 'output/' directory of Sharpyshell directory
+                                            Default: 'output' directory of Sharpyshell directory
             chunk_size                      The maximum limit of a chunk to be transferred over the network
                                             Default: 102400
         
