@@ -8,9 +8,9 @@ class ChannelXOR(Singleton):
         self.password = password
 
     def encrypt(self, plain_data):
-        key = self.password
-        xored = ''.join(chr(ord(x) ^ ord(y)) for (x, y) in list(zip(plain_data, cycle(key))))
-        return bytes(xored, 'utf-8')
+        key = self.password.encode()
+        xored = b''.join(bytes([(x ^ y)]) for (x, y) in list(zip(plain_data, cycle(key))))
+        return xored
 
     def decrypt(self, encrypted_data):
-        return self.encrypt(encrypted_data.decode('utf-8')).decode()
+        return self.encrypt(encrypted_data)
