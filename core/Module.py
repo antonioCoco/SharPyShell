@@ -56,9 +56,9 @@ class Module(Singleton):
     # End Override this method
 
     def _encrypt_request(self, request_clear):
-        request_encrypted = self._channel_enc_obj.encrypt(request_clear)
+        request_encrypted = self._channel_enc_obj.encrypt(request_clear.encode())
         request_encrypted_encoded = base64.b64encode(request_encrypted)
-        return request_encrypted_encoded
+        return request_encrypted_encoded.decode()
 
     def _post_request(self, request_encrypted_encoded):
         response_status_code, response_headers, response_text = \
@@ -75,6 +75,7 @@ class Module(Singleton):
         return response_clear
 
     def _parse_response(self, response):
+        response = response.decode()
         if '{{{' + self._exception_class.__name__ + '}}}' in response:
             raise self._exception_class(str(response))
         if '{{{SharPyShellError}}}' in response or '{{{PythonError}}}' in response:
