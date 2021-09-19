@@ -7,6 +7,7 @@ import importlib
 import shlex
 import hashlib
 import signal
+import platform
 from utils import prettify
 from utils.normalize_args import normalize_args
 from utils.random_string import random_generator
@@ -32,7 +33,10 @@ class SharPyShellPrompt(Cmd):
         importlib.reload(sys)
         #sys.setdefaultencoding('utf8')
         password = password.encode('utf-8')
-        signal.signal(signal.SIGTSTP, lambda s, f: self.do_quit())
+        if platform.system() == 'Windows':
+            signal.signal(signal.SIGTERM, lambda s, f: self.do_quit())
+        else:
+            signal.signal(signal.SIGTSTP, lambda s, f: self.do_quit())
         Cmd.__init__(self)
         if channel_enc_mode == 'aes128':
             self.password = hashlib.md5(password).hexdigest()
