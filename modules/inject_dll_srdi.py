@@ -142,7 +142,7 @@ class sRDI:
             # RDI shellcode
             # DLL bytes
             # User data
-            return bootstrap + rdiShellcode + dllBytes + str.encode(userData, 'utf-16-le')
+            return bootstrap + rdiShellcode + dllBytes + userData
 
         else:  # 32 bit
             rdiShellcode = rdiShellcode32
@@ -214,7 +214,7 @@ class sRDI:
             # RDI shellcode
             # DLL bytes
             # User data
-            return bootstrap + rdiShellcode + dllBytes + str.encode(userData, 'utf-16-le')
+            return bootstrap + rdiShellcode + dllBytes + userData
 
 
 class Inject_dll_srdi(Inject_shellcode):
