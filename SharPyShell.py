@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from core.Generate import Generate
 from core.SharPyShellPrompt import SharPyShellPrompt
@@ -144,7 +144,7 @@ def create_interact_parser(subparsers):
 
 
 if __name__ == '__main__':
-    print config.banner
+    print (config.banner)
     parser = argparse.ArgumentParser(prog='SharPyShell', formatter_class=argparse.RawTextHelpFormatter,
                                      epilog=example_text_main)
     parser.add_argument('--version', action='version', version=config.header)

@@ -1,8 +1,9 @@
-import config
+from core import config
 from cmd import Cmd
 import os
 import glob
 import sys
+import importlib
 import shlex
 import hashlib
 import signal
@@ -28,8 +29,9 @@ class SharPyShellPrompt(Cmd):
 
     def __init__(self, password, channel_enc_mode, default_shell, url, user_agent,
                  cookies, custom_headers, insecure_ssl, proxy):
-        reload(sys)
-        sys.setdefaultencoding('utf8')
+        importlib.reload(sys)
+        #sys.setdefaultencoding('utf8')
+        password = password.encode('utf-8')
         signal.signal(signal.SIGTSTP, lambda s, f: self.do_quit())
         Cmd.__init__(self)
         if channel_enc_mode == 'aes128':
@@ -80,7 +82,7 @@ class SharPyShellPrompt(Cmd):
             return self.emptyline()
         if cmd.startswith('#'):
             response = self.onecmd_custom(cmd.lstrip('#'), args)
-            print response
+            print (response)
             return response
         if cmd in self.helper_commands:
             func = getattr(self, 'do_' + cmd.lstrip('#'))
@@ -113,7 +115,7 @@ class SharPyShellPrompt(Cmd):
         """Change the current working directory."""
         working_directory = self.modules_settings['working_directory']
         if arg == "" or arg == " " or arg == '.':
-            print working_directory
+            print (working_directory)
             return
         if arg == '..':
             arg = working_directory.split('\\')
@@ -127,7 +129,7 @@ class SharPyShellPrompt(Cmd):
             elif len(arg) > 0:
                 arg = '\\'.join(arg)
             else:
-                print "Empty Path."
+                print ("Empty Path.")
                 return
         else:
             if '/' in arg:
@@ -143,25 +145,25 @@ class SharPyShellPrompt(Cmd):
         if '{{{SharPyShellError}}}' not in response:
             self.modules_settings['working_directory'] = arg
         else:
-            print response
+            print (response)
         return response
 
     def do_help(self, arg):
         """List available commands."""
         if arg and arg.lstrip('#') in self.modules_loaded_tree:
-            print self.modules_loaded[arg.lstrip('#')].complete_help
+            print (self.modules_loaded[arg.lstrip('#')].complete_help)
         else:
-            print "\n\n" + self.doc_header + "\n"
+            print ("\n\n" + self.doc_header + "\n")
             data = [['\nCommands\n', '\nDesc\n']]
             for module_name in sorted(self.modules_loaded_tree):
                 data.append(['#%s' % module_name, self.modules_loaded[module_name].short_help])
-            print prettify.tablify(data, table_border=False)
+            print (prettify.tablify(data, table_border=False))
             print
-            print "\n" + "SharPyShell Helper Commands:" + "\n"
+            print ("\n" + "SharPyShell Helper Commands:" + "\n")
             data = [['\nCommands\n', '\nDesc\n']]
             for module_name in sorted(self.helper_commands):
                 data.append(['%s' % module_name, getattr(self, 'do_'+module_name).__doc__])
-            print prettify.tablify(data, table_border=False)
+            print (prettify.tablify(data, table_border=False))
             print
 
     def complete_help(self, text, line, start_index, end_index):
@@ -217,10 +219,10 @@ class SharPyShellPrompt(Cmd):
             return
         # Clean trailing newline if existent to prettify output
         result = result[:-1] if (
-                isinstance(result, basestring) and
+                isinstance(result, str) and
                 result.endswith('\n')
         ) else result
-        print result
+        print (result)
 
     def cmdloop(self, intro=None):
         """Repeatedly issue a prompt, accept input, parse an initial prefix
@@ -251,7 +253,7 @@ class SharPyShellPrompt(Cmd):
                     else:
                         if self.use_rawinput:
                             try:
-                                line = raw_input(self.prompt)
+                                line = input(self.prompt)
                             except EOFError:
                                 line = 'EOF'
                         else:
@@ -279,10 +281,10 @@ class SharPyShellPrompt(Cmd):
     def do_quit(self, args=[]):
         """Quit the program."""
         if self.online:
-            print "\n\nQuitting...\n"
-            print self.env_obj.clear_env(self.modules_settings)
+            print ("\n\nQuitting...\n")
+            print (self.env_obj.clear_env(self.modules_settings))
         else:
-            print args[0] + "\n\n\nTarget Offline...\n"
+            print (args[0] + "\n\n\nTarget Offline...\n")
         raise SystemExit
 
     def do_exit(self, args=[]):

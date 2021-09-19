@@ -1,17 +1,14 @@
-import StringIO
+import io 
 import gzip
 import base64
 
 
 def get_compressed_base64_from_file(path):
-    compressed_stream = StringIO.StringIO()
-    with gzip.GzipFile(fileobj=compressed_stream, mode="wb") as compressed, open(path, 'rb') as infile:
-        compressed.write(infile.read())
-    return base64.b64encode(compressed_stream.getvalue())
+
+    with open(path, 'rb') as f:
+        read_data = f.read() 
+    return base64.b64encode(gzip.compress(read_data)).decode()
 
 
 def get_compressed_base64_from_binary(bin_bytearray_input):
-    compressed_stream = StringIO.StringIO()
-    with gzip.GzipFile(fileobj=compressed_stream, mode="wb") as compressed:
-        compressed.write(str(bin_bytearray_input))
-    return base64.b64encode(compressed_stream.getvalue())
+    return base64.b64encode(gzip.compress(bin_bytearray_input)).decode()

