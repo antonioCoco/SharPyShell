@@ -78,7 +78,7 @@ class Generate():
                 representation = '='
             for i in range(0, len(dll_code), 8):
                 int_conversion = unpack(representation + 'Q', dll_code[i:i + 8])[0]
-                ulong_quotients.append(str(int_conversion / divisor))
+                ulong_quotients.append(str(int_conversion // divisor))
                 ulong_remainders.append(str(int_conversion % divisor))
             ulong_quotients_string = '{' + ','.join(ulong_quotients) + '}'
             ulong_remainders_string = '{' + ','.join(ulong_remainders) + '}'
