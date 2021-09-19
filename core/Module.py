@@ -75,7 +75,7 @@ class Module(Singleton):
         return response_clear
 
     def _parse_response(self, response):
-        response = response.decode()
+        response = response.decode() if isinstance(response, bytes) else response
         if '{{{' + self._exception_class.__name__ + '}}}' in response:
             raise self._exception_class(str(response))
         if '{{{SharPyShellError}}}' in response or '{{{PythonError}}}' in response:
