@@ -119,6 +119,7 @@ class Download(Module):
         try:
             with open(output_path, file_open_mode) as outfile:
                 outfile.write(file_content)
+        # tune for Windows race condition on file access when the chunk_size is very small, weird...
         except PermissionError:
             sleep(1)
             with open(output_path, file_open_mode) as outfile:

@@ -14,8 +14,8 @@ class Lateral_wmi(Module):
         This module run a wmic /node:[ip] command in order to launch commands on a remote windows system.
         This will result in a lateral movement if shared credentials are known.
         
-        Note that if you use local users credentials you should ensure that, on the target server, the feature
-        "LocalAccountTokenFilterPolicy" is disabled.
+        Note that if you use local admin credentials you should ensure that, on the target server, the feature
+        "LocalAccountTokenFilterPolicy" is disabled. (except for builtin Administrator)
         To disable that you need to add the following regkey with the value of 1:
         
         HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system\LocalAccountTokenFilterPolicy
@@ -24,7 +24,7 @@ class Lateral_wmi(Module):
             reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
         
         If you use domain users for the lateral movement, no restrictions to the process token will be applied.
-        Remember to always specify the domain in the username field. If you use a local account use
+        Remember to always specify the domain in the username field. If you use a local account use the machine name as the domain.
         
         This module uses WMI builtin features wmi and doesn't need additional files to be droppend on the target
         server.
