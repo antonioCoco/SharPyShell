@@ -2,6 +2,7 @@ from core.Module import Module, ModuleException
 from core import config
 import ntpath
 import traceback
+from time import sleep
 
 
 class DownloadModuleException(ModuleException):
@@ -115,8 +116,13 @@ class Download(Module):
             file_open_mode = 'ab'
         else:
             file_open_mode = 'wb'
-        with open(output_path, file_open_mode) as outfile:
-            outfile.write(file_content)
+        try:
+            with open(output_path, file_open_mode) as outfile:
+                outfile.write(file_content)
+        except PermissionError:
+            sleep(1)
+            with open(output_path, file_open_mode) as outfile:
+                outfile.write(file_content)
         output = "File Downloaded correctly to " + output_path
         return output
 
