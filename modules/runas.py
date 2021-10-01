@@ -335,6 +335,8 @@ class Runas(Module):
         domain = args_parser.get(3, self.__default_domain)
         process_ms_timeout = args_parser.get(4, self.__default_process_ms_timeout)
         logon_type = args_parser.get(5, self.__default_logon_type)
+        if process_ms_timeout == '' or logon_type == '':
+            raise self._exception_class('#runas: process_ms_timeout and logon_type field cannot be empty.\n')
         return cmd, username, password, domain,process_ms_timeout, logon_type
 
     def _create_request(self, args):
