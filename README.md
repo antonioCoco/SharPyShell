@@ -17,12 +17,12 @@ python SharPyShell.py interact -u http://target.url/sharpyshell.aspx -p somepass
 
 ## Requirements
 
-Python version >= 2.7
+Python version >= 3.6
 
 and
 
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Description
