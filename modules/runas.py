@@ -34,8 +34,7 @@ class Runas(Module):
             domain                  domain of the user, if in a domain. 
                                     Default: ''
             process_timeout_ms      the waiting time (in ms) to use in the WaitForSingleObject() function.
-                                    This will halt the process until the spawned process ends and sent
-                                    the output back to the webshell.
+                                    This will halt the process until the spawned process ends and sent the output back to the webshell.
                                     If you set 0 an async process will be created and no output will be retrieved.
                                     Default: '60000'
             logon_type              the logon type for the spawned process.
@@ -55,7 +54,7 @@ class Runas(Module):
                                                 
     """
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 using System.Runtime.InteropServices;using System.Security.Principal;using System.Security.Permissions;using System.Security;using Microsoft.Win32.SafeHandles;using System.Runtime.ConstrainedExecution;
 
@@ -336,6 +335,8 @@ class Runas(Module):
         domain = args_parser.get(3, self.__default_domain)
         process_ms_timeout = args_parser.get(4, self.__default_process_ms_timeout)
         logon_type = args_parser.get(5, self.__default_logon_type)
+        if process_ms_timeout == '' or logon_type == '':
+            raise self._exception_class('#runas: process_ms_timeout and logon_type field cannot be empty.\n')
         return cmd, username, password, domain,process_ms_timeout, logon_type
 
     def _create_request(self, args):

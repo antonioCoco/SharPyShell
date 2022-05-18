@@ -16,19 +16,19 @@ def tablify(data, table_border=True):
         table = prettytable.PrettyTable()
 
         # List outputs.
-        if isinstance(data, (types.ListType, types.TupleType)):
+        if isinstance(data, (list, tuple)):
 
             if len(data) > 0:
 
                 columns_num = 1
-                if isinstance(data[0], (types.ListType, types.TupleType)):
+                if isinstance(data[0], (list, tuple)):
                     columns_num = len(data[0])
 
                 for row in data:
                     if not row:
                         continue
 
-                    if isinstance(row, (types.ListType, types.TupleType)):
+                    if isinstance(row, (list, tuple)):
                         table.add_row(row)
                     else:
                         table.add_row([row])
@@ -38,7 +38,7 @@ def tablify(data, table_border=True):
 
             # Populate the rows
             randomitem = next(data.itervalues())
-            if isinstance(randomitem, (types.ListType, types.TupleType)):
+            if isinstance(randomitem, (list, tuple)):
                 for field in data:
                     table.add_row([field] + data[field])
             else:

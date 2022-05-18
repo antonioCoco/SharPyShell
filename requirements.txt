@@ -1,6 +1,6 @@
 urllib3
 PySocks
-pycrypto
+pycryptodome
 pyopenssl
 pefile
 prettytable

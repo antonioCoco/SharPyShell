@@ -38,14 +38,12 @@ class sRDI:
             functionHash = 0
 
             for b in function:
-                b = ord(b)
                 functionHash = ror(functionHash, 13, 32)
                 functionHash += b
 
             moduleHash = 0
 
             for b in module:
-                b = ord(b)
                 moduleHash = ror(moduleHash, 13, 32)
                 moduleHash += b
 
@@ -57,7 +55,6 @@ class sRDI:
             functionHash = 0
 
             for b in function:
-                b = ord(b)
                 functionHash = ror(functionHash, 13, 32)
                 functionHash += b
 
@@ -281,7 +278,7 @@ class Inject_dll_srdi(Inject_shellcode):
             thread_parameters, exported_function_name, exported_function_data = self._parse_run_args(args)
         dll_path = config.modules_paths + 'dll/' + dll_path
         with open(dll_path, 'rb') as file_handle:
-            dll_bin_byte_arr = bytearray(file_handle.read())
+            dll_bin_byte_arr = file_handle.read()
         srdi_object = sRDI()
         if exported_function_name != 0x10:
             exported_function_name = srdi_object.HashFunctionName(exported_function_name)

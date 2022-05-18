@@ -20,7 +20,7 @@ class Module(Singleton):
         """
     '''runtime_code must have the class name "SharPyShell" and the main function name "ExecRuntime". The ExecRuntime 
        function will be the code run on the server and it must return results in byte[] type '''
-    _runtime_code = ur"""
+    _runtime_code = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell
                 {                    
@@ -56,17 +56,17 @@ class Module(Singleton):
     # End Override this method
 
     def _encrypt_request(self, request_clear):
-        request_encrypted = self._channel_enc_obj.encrypt(request_clear)
+        request_encrypted = self._channel_enc_obj.encrypt(request_clear.encode())
         request_encrypted_encoded = base64.b64encode(request_encrypted)
-        return request_encrypted_encoded
+        return request_encrypted_encoded.decode()
 
     def _post_request(self, request_encrypted_encoded):
         response_status_code, response_headers, response_text = \
             self._request_object.send_request(request_encrypted_encoded)
         if response_status_code != 200:
-            raise self._exception_class('{{{' + self._exception_class.__name__ + '}}}\n' +
+            raise self._exception_class('{{{' + str(self._exception_class.__name__) + '}}}\n' +
                                         str(response_headers) + '\n\n' +
-                                        response_text)
+                                        str(response_text))
         return response_text
 
     def _decrypt_response(self, encrypted_response_encoded):
@@ -75,6 +75,7 @@ class Module(Singleton):
         return response_clear
 
     def _parse_response(self, response):
+        response = response.decode() if isinstance(response, bytes) else response
         if '{{{' + self._exception_class.__name__ + '}}}' in response:
             raise self._exception_class(str(response))
         if '{{{SharPyShellError}}}' in response or '{{{PythonError}}}' in response:

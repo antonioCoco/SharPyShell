@@ -52,7 +52,7 @@ class Inject_dll_reflective(Inject_shellcode):
     def __get_reflective_loader_offset(self, dll_path):
         pe_parser = pefile.PE(dll_path)
         for exported_function in pe_parser.DIRECTORY_ENTRY_EXPORT.symbols:
-            if 'ReflectiveLoader' in exported_function.name:
+            if 'ReflectiveLoader' in str(exported_function.name):
                 reflective_loader_rva = exported_function.address
                 return hex(pe_parser.get_offset_from_rva(reflective_loader_rva))
         raise self._exception_class('The DLL does not contain a reflective loader function.\n')
@@ -63,7 +63,7 @@ class Inject_dll_reflective(Inject_shellcode):
         dll_path = config.modules_paths + 'reflective_dll/' + dll_path
         code_offset = str(self.__get_reflective_loader_offset(dll_path))
         with open(dll_path, 'rb') as file_handle:
-            byte_arr = bytearray(file_handle.read())
+            byte_arr = file_handle.read()
         base64_compressed_dll = gzip_utils.get_compressed_base64_from_binary(byte_arr)
         if injection_type == 'remote_virtual_protect':
             runtime_code = self._runtime_code % (self._runtime_code_virtual_protect, base64_compressed_dll,

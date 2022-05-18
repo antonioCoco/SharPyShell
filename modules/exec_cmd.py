@@ -30,7 +30,7 @@ class Exec_cmd(Module):
                 #exec_cmd echo test > C:\Windows\Temp\test.txt
     """
 
-    _runtime_code = ur"""
+    _runtime_code = r"""
                 using System;using System.IO;using System.Diagnostics;using System.Text;
                 public class SharPyShell
                 {                    
