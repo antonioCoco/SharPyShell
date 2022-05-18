@@ -11,8 +11,8 @@ SharPyShell supports only C# web applications that runs on .NET Framework >= 2.0
 ## Usage
 
 ```
-python SharPyShell.py generate -p somepassword
-python SharPyShell.py interact -u http://target.url/sharpyshell.aspx -p somepassword
+python3 SharPyShell.py generate -p somepassword
+python3 SharPyShell.py interact -u http://target.url/sharpyshell.aspx -p somepassword
 ```
 
 ## Requirements
