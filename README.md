@@ -112,6 +112,7 @@ Generated with asciiflow.com
  #mimikatz               Run an offline version of mimikatz directly in memory                      
  #net_portscan           Run a port scan using regular sockets, based (pretty) loosely on nmap      
  #privesc_juicy_potato   Launch InMem Juicy Potato attack trying to impersonate NT AUTHORITY\SYSTEM 
+ #privesc_efs_potato     Launch InMem EFS Potato attack trying to impersonate NT AUTHORITY\SYSTEM
  #privesc_powerup        Run Powerup module to assess all misconfiguration for privesc              
  #runas                  Run a cmd.exe /c command spawning a new process as a specific user         
  #runas_ps               Run a powershell.exe -enc spawning a new process as a specific user        
