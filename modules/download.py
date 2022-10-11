@@ -174,7 +174,7 @@ class Download(Module):
                 if len(requests) > 1:
                     parsed_response = self.__write_local_file(file_content, download_output_path, split=True)
                     print ('Chunk ' + str(i + 1) + ' --> ' + str(chunk_size * i) + ' - ' +\
-                          str(chunk_size * i + chunk_size) + ' bytes written correctly to ' + download_output_path)
+                          str(chunk_size * i + chunk_size) + ' bytes written correctly to ' + download_output_path,end="\r")
                 else:
                     parsed_response = self.__write_local_file(file_content, download_output_path)
         except ModuleException as module_exc:

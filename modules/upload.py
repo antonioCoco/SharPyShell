@@ -165,7 +165,7 @@ class Upload(Module):
                 parsed_response = self._parse_response(decrypted_response)
                 if len(requests) > 1:
                     print ('Chunk ' + str(i + 1) + ' --> ' + str(chunk_size*i) + ' - ' + str(chunk_size*i+chunk_size) +\
-                          ' bytes written correctly to ' + upload_output_path)
+                          ' bytes written correctly to ' + upload_output_path ,end="\r")
         except ModuleException as module_exc:
             parsed_response = str(module_exc)
         except Exception:
