@@ -30,13 +30,13 @@ class Request(Singleton):
         if proxy:
             proxy_type = proxy.split('://')[0]
             if proxy_type == 'http' or proxy_type == 'https':
-                self.__request_obj = urllib3.ProxyManager(proxy, ssl_version=ssl.PROTOCOL_TLSv1,
+                self.__request_obj = urllib3.ProxyManager(proxy, ssl_version=ssl.PROTOCOL_TLS_CLIENT,
                                                           timeout=self.__request_timeout, cert_reqs=self.__verify)
             else:
-                self.__request_obj = SOCKSProxyManager(proxy, ssl_version=ssl.PROTOCOL_TLSv1,
+                self.__request_obj = SOCKSProxyManager(proxy, ssl_version=ssl.PROTOCOL_TLS_CLIENT,
                                                        timeout=self.__request_timeout, cert_reqs=self.__verify)
         else:
-            self.__request_obj = urllib3.PoolManager(ssl_version=ssl.PROTOCOL_TLSv1, timeout=self.__request_timeout,
+            self.__request_obj = urllib3.PoolManager(ssl_version=ssl.PROTOCOL_TLS_CLIENT, timeout=self.__request_timeout,
                                                      cert_reqs=self.__verify)
         # print (vars(self))
 
